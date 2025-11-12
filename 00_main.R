@@ -21,3 +21,6 @@ source("mission1-member1.R")
 
 ## Source member 2 script ----
 source("mission1-member2.R")
+
+## Source member 3 script ----
+source("mission1-NG.R")
