@@ -1,0 +1,10 @@
+.Rproj.user
+.Rhistory
+.RData
+.Ruserdata
+
+data/*
+plot/*
+04_quarto_files/*
+*.html
+*.docx

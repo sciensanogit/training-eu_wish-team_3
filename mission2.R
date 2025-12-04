@@ -1,48 +1,70 @@
 ############################################################################### #
 # Aim ----
-#| generating wastewater reports
-# Requires: 
+#| load data and produce first graph
 # NOTES:
-#| git cheat: git status, git add -A, git commit -m "", git push, git pull, git restore
+#| list of things to do
+#|
 ############################################################################### #
 
 # Load packages ----
 # select packages
-pkgs <- c("dplyr", "ggplot2", "flextable", "quarto")
+pkgs <- c("dplyr", "ggplot2")
 # install packages
 install.packages(setdiff(pkgs, rownames(installed.packages())))
 invisible(lapply(pkgs, FUN = library, character.only = TRUE))
 
-# load epi assessment
-main_text <- read.csv("epi_assessment_text.csv")
-cat("- Success : text loaded \n")
+# load data ----
+# Belgian data are available here https://www.geo.be/catalog/details/9eec5acf-a2df-11ed-9952-186571a04de2?l=en
+#| Metadata
+#| siteName is the name of the treatment plant
+#| collDTStart is the date of sampling
+#| labName is the name of the lab analysing the sample
+#| labProtocolID is the protocol used to analyse the dample
+#| flowRate is the flow rate measured at the inlet of the treatment plant during sampling
+#| popServ is the population covered by the treatment plant
+#| measure is the target measured
+#| value is the result
 
-# Save table ----
-tbl_oostende_aalst <- df %>%
+# sars-cov-2 data
+df_sc <- read.csv("https://data.geo.be/ws/sciensano/wfs?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAMES=sciensano:wastewatertreatmentplantscovid&outputFormat=csv")
+
+# pmmv data
+df_pmmv <- read.csv("https://data.geo.be/ws/sciensano/wfs?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAMES=sciensano:wastewatertreatmentplantspmmv&outputFormat=csv")
+
+# join both
+df <- df_sc %>%
+  rbind(df_pmmv)
+
+# clean data
+df <- df %>%
+  select(siteName, collDTStart, labName, labProtocolID, flowRate, popServ, measure, value)
+
+# format date
+df$date <- as.POSIXct(df$collDTStart, format = "%Y-%m-%dT%H:%M:%S")
+df$date <- format(df$date, "%Y-%m-%d")
+
+# set and subset dates
+date_reporting <- as.Date("2025-09-01", format = "%Y-%m-%d")
+date_graph_start <- as.Date("2024-09-01", format = "%Y-%m-%d")
+date_graph_end <- as.Date("2025-12-01", format = "%Y-%m-%d")
+
+# compute viral ratio
+# unique(df$measure) ...
+
+# produce graph ----
+plot <- df %>%
   filter(labProtocolID == "SC_COV_4.1") %>%
   filter(measure == "SARS-CoV-2 E gene") %>%
-  filter(date > date_graph_start & date < date_reporting) %>%
+  filter(date > date_graph_start & date < date_reporting+1) %>%
   filter(siteName %in% c("Aalst", "Oostende")) %>%
-  select(siteName, date, measure, value) %>%
-  arrange(desc(date)) %>% 
-  slice_head(n = 10) %>%
-  flextable() %>%
-  fontsize(part = "body",size = 10) %>%
-  fontsize(part = "header",size = 10) %>%
-  autofit() %>% theme_vanilla()
+  ggplot(aes(x = date, y = value, group = siteName, color = siteName)) +
+  geom_point(na.rm = T) +
+  geom_line(na.rm = T)
 
-cat("- Success : tables saved \n")
+plot
 
-# Render weekly sub report ----
-save.image(".RData")
+# save
+ggsave(file="./plot/graph_oostende_aalst.png",
+       plot, width = 21, height = 12, dpi = 200)
 
-# settings
-output_name <- paste0("Report-", format(date_reporting, "%G-W%V"))
-format_output <- c("html")
-# format_output <- c("html","docx")
-
-quarto_render(input = "mission2.qmd",
-              output_file = output_name,
-              output_format = format_output)
-
-cat("- Success : quarto render \n")
+cat("- Success : mission2 \n")
