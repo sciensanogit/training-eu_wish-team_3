@@ -15,12 +15,12 @@ Here are your missions!!!
 - compute viral ratio (SARS/PMMV) in a variable named "value_pmmv" using pivot_longer()
 - compute moving average on past 14 days
 - aggregate data at national level by computing weighted mean with factor being the popServed by each site
-- match the metadata structure of file ./data_example/Belgium_export-nation.csv
+- match the metadata structure of file ./Belgium_export-nation.csv
 - create ./data folder if not existing and export data in .csv format using writ.table(), in .xlsx format using write.xlsx(), and in .rds using saveRDS()
 
 ## 02_visuals.R
 - adapt 02_visuals.R code to
-- load data saved in ./data_example/Belgium_export-nation.csv folder, at the end use the file exported by your team
+- load data saved in ./Belgium_export-nation.csv folder, at the end use the file exported by your team
 - create ./plot folder if not existing
 - create figure with the viral ratio at the national level (inspiration from Session1 is welcome)
 - save graph as ./plot/graph-viral_ratio-nation.png
@@ -28,7 +28,7 @@ Here are your missions!!!
 - Add a past two weeks moving average line
 
 ## Adapt 03_tbl.R to
-- load data saved in ./data_example/Belgium_export-nation.csv folder, at the end use the file exported by your team
+- load data saved in ./Belgium_export-nation.csv folder, at the end use the file exported by your team
 - save a table showing last ten dates of the national viral ratio with the last date being the date_reporting defined in 01_data_prep.R
 - display only sampling days which are Mondays
 - display understandable headers, nice units, nice digits
@@ -46,6 +46,8 @@ Here are your missions!!!
 - start doing this 45 min before the end of session2, to ensure having enough time.
 - ask each team member to commit their change and push it to the online repository
 - source 01_data_prep.R, 02_visuals.R, 03_tbl.R, and 04_quarto. make sure to load all packages needed in 00_main.R only
+- remove non necessary files
+- commit and push the modifications
 
 ## extra steps if you have time
 - produce .html and .docx files with the quarto render
