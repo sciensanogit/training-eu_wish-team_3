@@ -3,7 +3,12 @@
 .RData
 .Ruserdata
 
-data/*
+data/Belgium_export-nation.csv
+data/Belgium_export-site_raw.csv
+data/Belgium_export-site.csv
+data/Belgium_export.rds
+data/Belgium_export.xlsx
+
 plot/*
 04_quarto_files/*
 *.html
