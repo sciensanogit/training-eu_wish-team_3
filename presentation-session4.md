@@ -1,5 +1,5 @@
 # Session 4 (05/05/2026) ----
-You can select one of the folling options for this session
+You can select one of the following options for this session
 - Back_to_session_3
 - Shiny_basic: focus on shiny
 - Shiny_advanced: implement SARS/Flu/RSV in data preparation, visuals, tables, reporting, and shiny
@@ -39,11 +39,11 @@ Meet regularly to share advancement.
 
 ### 02_visuals.R
 - load and use ./Belgium_export-nation-sc_flu_rsv-fake.csv until the 01_data_prep.r script is ready
-- adapt date_reporting to last monday, date_graph_start to 01/09/2025, date_graph_end to 01/09/2026
+- adapt date_reporting to last Monday, date_graph_start to 01/09/2025, date_graph_end to 01/09/2026
 - write a function to save a graph for sars, rsv and flu
 
 ### 03_tbl.R
-- load and use ./Belgium_export-nation-sc_flu_rsv-fake.csv until the 01_data_prep.r script is ready
+- load and use ./Belgium_export-nation-sc_flu_rsv-fake.csv until the 01_data_prep.R script is ready
 - save a table showing last ten dates of the national viral ratio with the last date being the date_reporting defined in 01_data_prep.R
 - display only sampling days which are Mondays
 - save a table for sars, rsv and flu. this table will be added in the report
