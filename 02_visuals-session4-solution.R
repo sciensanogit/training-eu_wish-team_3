@@ -74,9 +74,6 @@ df <- df %>%
           labels = c("Green", "Yellow", "Orange", "Red"),
           right = T)))
 
-# if value_pmmv is NA then activity_level is "Grey"
-df[is.na(df$value_pmmv), ]$activity_level <- "Grey"
-
 # function to plot map
 fct_map <- function(result_in, shp_wwp_in, measure_in){
   # result_in <- df
