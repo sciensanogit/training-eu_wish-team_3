@@ -8,29 +8,23 @@
 ############################################################################### #
 
 # Load packages ----
+# create a folder to save packages
+dir.create("./library", showWarnings = F)
+
+# specify the library
+.libPaths("./library")
+
 # select packages
-pkgs <- c("dplyr", "ggplot2")
+pkgs <- c("dplyr", "tidyr", "ggplot2", "zoo", "flextable", "ggplot2", "writexl", "quarto", "shiny", "plotly", "sf")
 # install packages
 install.packages(setdiff(pkgs, rownames(installed.packages())))
 invisible(lapply(pkgs, FUN = library, character.only = TRUE))
 
-
-# Mission 1_1 ----
+# Session 1 ----
 # Source member 1 script
-source("mission1_1-member1.R")
+source("01_data_prep-session1-member1.R")
 
 # Source member 2 script
-source("mission1_1-member2.R")
-
-# Source member MG script
-source("mission1_1-MG.R")
-
-# Mission 1_2 ----
-# produce visuals
-source("mission1_2.R")
-
-# Mission 2 ----
-# produce reports
-source("mission2.R")
+source("01_data_prep-session1-member1.R")
 
 

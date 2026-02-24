@@ -23,28 +23,32 @@ execute:
 
 ```{r}
 #| label: load packages and data
-load(".RData")
+load("image.RData")
 
 library(flextable)
 library(dplyr)
 ```
 
-## Intro
+## Summary
 
 Latest results dating of `r format(date_reporting, "%G-W%V")` (`r format(date_reporting, "%d-%m-%Y")`):
 
--   `r main_text %>% filter(date_week == format(date_reporting, "%G-W%V")) %>% pull(SARS_nation_level_en)`
+-   For SARS-CoV-2: `r main_text %>% filter(date_week == format(date_reporting, "%G-W%V")) %>% pull(SARS_nation_level_en)`
 
-## National level
+## SARS-CoV-2
 
-Viral concentration of two wastewater treatment plants:
+### National level
 
-![](./plot/graph_oostende_aalst.png)
+Graph to be added later
 
-## Individual area level
+### Individual area level
 
-Table of two wastewater treatment plants :
+SARS viral concentration of two wastewater treatment plants:
+
+![](./plot/graph-sars-arlon-brussels_north.png)
+
+Table of Brussels-North:
 
 ```{r}
-# tbl_nation
+tbl_bx_sars
 ```

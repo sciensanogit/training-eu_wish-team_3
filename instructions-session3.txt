@@ -1,0 +1,55 @@
+# Session 3 ----
+Run the part loading packages in script "00_main.R"
+All your team members should read the code of 01_data_prep-session2-solution.R
+Read carefully this document.
+Then you may split the following tasks within your team.
+Meet regularly to share advancement.
+
+## 01_data_prep-session2-solution.R ----
+observe the metadata structure of ./data/Belgium_export-site-fake.csv as your task is to produce a similar table
+Adapt 01_data_prep-session2-solution.R code to
+aggregate data at national level by computing weighted mean with factor being the popServed by each site
+compute moving average on past 14 days
+save this table in df_nation
+export data in .csv format using writ.table(), in .xlsx format using write.xlsx(), and in .rds using saveRDS()
+
+## 02_visuals-session2.R ----
+Adapt 02_visuals-session2.R code to
+create a figure with the SARS viral ratio (variable called value_pmmv) at the national level (inspiration from mission2.R is welcome)
+save a graph for SARS as ./plot/graph-SARS-viral_ratio-nation.png
+save a graph for RSV as ./plot/graph-RSV-viral_ratio-nation.png
+save a graph for Influenza as ./plot/graph-Influenza-viral_ratio-nation.png
+Display nice xaxis, yaxis
+Add a past two weeks moving average line from the variable  (variable called value_pmmv_avg14d_past)
+
+## 03_tbl-session2.R ----
+Adapt 03_tbl-session2.R code to
+save a table showing last ten dates of the national viral ratio with the last date being the date_reporting
+do this for SARS as tbl_SARS_nation, for Influenza as tbl_Influenza_nation, for RSV as tbl_RSV_nation
+display only sampling days which are Mondays
+display understandable headers, nice units, nice digits
+the tables will be used by the 04_quarto.R script
+
+## 04_quarto.R ----
+Run 02_visuals-session2.R
+Manually save ./plot/graph-sars-arlon-brussels_north.png as ./plot/graph-SASR-viral_ratio-nation.png
+Manually save ./plot/graph-sars-arlon-brussels_north.png as ./plot/graph-Influenza-viral_ratio-nation.png
+Manually save ./plot/graph-sars-arlon-brussels_north.png as ./plot/graph-RSV-viral_ratio-nation.png
+run and adapt 03_tbl-session2.R to
+save tbl_bx_sars as tbl_SARS_nation
+save tbl_bx_sars as tbl_Influenza_nation
+save tbl_bx_sars as tbl_RSV_nation
+adapt 04_quarto.R code to
+add national graphs and tables in the SARS, Influenza and RSV sections
+
+## 00_main.R ----
+start doing this 45 min before the session ends, to ensure having enough time.
+ask each team member to commit their change and push it to the online repository
+source 01_data_prep, 02_visuals, 03_tbl, 04_quarto files you modified
+remove non necessary files
+commit and push the modifications
+
+## extra steps if you have time --
+select three interesting dates at which SARS, RSV, or Influenza is increasing
+modify the ./data/epi_assessment_text.csv accordingly to the epidemiological situation
+produce automated reports for those three dates by modifying the date_reporting variable

@@ -1,0 +1,64 @@
+# Session 2 ----
+Run the part loading packages in script "00_main.R"
+Read carefully this document.
+Then you may split the following tasks within your team.
+Meet regularly to share advancement.
+
+## 01_data_prep-session2.R ----
+observe the metadata structure of ./data/Belgium_export-site-fake.csv as your task is to reproduce this table
+adapt 01_data_prep-session2.R code to
+define date_reporting ("2026-02-01"), date_graph_start (2025-09-01) and date_graph_end ("2026-09-01")
+subset dates between date_graph_start (2025-09-01) and date_graph_end ("2026-09-01")
+subset SARS, Influenza, RSV or PMMV data based on labProtocolID used between date_graph_start and date_graph_end ("SC_COV_5.0", "UA_COV_5.0", "SC_PMMV_3.0", "UA_PMMV_3.0", "SC_INF_2.0", "UA_INF_2.0", "SC_RSV_2.0", "UA_RSV_2.0")
+rename measure to SARS, Influenza, RSV or PMMV only
+translate two siteName from French to English ("Bruxelles-Sud" to "Brussels-South", "Bruxelles-Nord" to "Brussels-North")
+apply LOQ provided by the lab. Set PMMV values below 250 to NA
+remove outlier based on the variable named "Quality". Set samples with "Quality concerns" to NA
+compute mean of replicated analysis of each measure using group_by() and summarize()
+Use pivot_wider and then pivot_longer to have SARS, Influenza, RSV in the "measure" variable, but not PMMV anymore
+compute viral ratio (SARS/PMMV) in a variable named "value_pmmv" for each siteName
+compute viral load (value*flowRate*24*1000000/popServ*100000) in a variable named "value_load"
+save this table in df_site_raw
+compute moving average on past 14 days of "value", "value_load", "value_pmmv" in "value_avg14d_past", "value_load_avg14d_past", "value_pmmv_avg14d_past"
+save this table in df_site
+export data in .csv
+
+## 02_visuals-session2.R ----
+adapt 02_visuals-session2.R
+load data saved in ./data/Belgium_export-site-fake.csv folder, at the end use the file exported by your team
+save a graph for Brussels-North and Arlon with the viral ratio of SARS
+save a graph for Brussels-North and Arlon with the viral ratio of RSV
+save a graph for Brussels-North and Arlon with the viral ratio of Influenza
+display nice xaxis, yaxis
+add a past two weeks moving average line
+inspiration from Session1 is welcome
+
+## 03_tbl-session2.R ----
+adapt 03_tbl-session2.R code to
+load data saved in ./data/Belgium_export-site-fake.csv folder, at the end use the file exported by your team
+save a table showing last ten dates of the SARS viral ratio for Brussels-North with the last date being the date_reporting
+save a similar table for RSV
+save a similar table for Influenza
+display only sampling days which are Mondays
+display understandable headers, nice units, nice digits
+test different themes
+
+## 04_quarto.R ----
+Run 02_visuals-session2.R and 03_tbl-session2.R
+run 04_quarto.R and view the .html file produced
+modify the epi_assessment_text.csv at the reporting_date defined and run 04_quarto.R again and observe the modification of text
+adapt 04_quarto.qmd to
+add an Influenza and RSV bullet point in the Summary section, refering to the text in main_text
+add Influenza and RSV sections with appropriate graphs and tables
+add sentences to introduce graphs and tables
+try to subtract reporting_date by 7 days and produce a new version .html version
+
+## 00_main.R ----
+start doing this 45 min before the session ends, to ensure having enough time.
+ask each team member to commit their change and push it to the online repository
+source 01_data_prep, 02_visuals, 03_tbl, 04_quarto files
+remove non necessary files
+commit and push the modifications
+extra steps if you have time
+produce .html and .docx files with the quarto render
+Display LOQ in red on graph (values below 700 copies /copies of PMMV)

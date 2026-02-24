@@ -1,0 +1,68 @@
+# Session 4 ----
+Run the part loading packages in script "00_main.R"
+All your team members should read the code of 01_data_prep-session3-solution.R
+Read carefully this document.
+Your team should select one of the following options for this session
+1) Back_to_session_3
+2) Shiny_basic: focus on shiny
+3) Shiny_advanced: implement a map and colors in column of tables in reporting, and shiny
+Decide which option your team would like to work on today.
+Read the instructions and split the tasks within your team.
+Meet regularly to share advancement.
+
+
+## Back_to_session_3 ----
+Do the session 3 again.
+Follow instructions in presentation-session3.txt
+
+
+## Shiny_basic ----
+run 01_data_prep-session3-solution.R code to create ./data/.csv, ./data/.rds, and ./data/_.xlsx
+click on the "Run app" button to run app_V1.R and vizualise your dashboard
+adapt the app_V1.R script to explain what is presented in the "About" tab
+In the "Respi. virus" tab, change the colors of text, xaxis, yaxis, date format and acknowledgement text
+Add a new "Illicit drug" tab with a text explaining that in 2027 data will be added here
+Add a line to the graph using the color "#BCCF00FF" and the variable value_pmmv_avg14d_past
+At line 10, load the data by site, select appropriate variables and join it to the nation data
+Run app to display changes
+Share your version to your team through github and test apps of developed by others
+Discover how to deploy your shinyapp online on https://www.shinyapps.io/
+
+## Shiny_advanced ----
+run 01_data_prep-session3-solution.R code to create ./data/.csv, ./data/.rds, and ./data/_.xlsx
+check that Belgium_export-site.csv contains the right data
+
+### 02_visuals.R ----
+load the shape files ./data/belgium.shp, ./data/province.shp, ./data/wwtp_2023.shp
+translate from French to English ("Bruxelles-Sud" to "Brussels-South", "Bruxelles-Nord" to "Brussels-North")
+select siteName from ./data/Belgium_export-site-fake.csv
+create a variable called activity_level and assign it a color name
+use this color to fill sampling site on a map
+save a map for SARS, RSV and influenza displaying the sampling site in a specific color
+the color depends on the value_pmmv measured at the date_reporting
+for SARS: greeen (0-1150), yellow (>1150-2390), orange (>2390-5070), red (>5070)
+for RSV: greeen (0-112), yellow (>112-253), orange (>253-507), red (>507)
+for Influenza: greeen (0-84), yellow (>84-276), orange (>276-569), red (>569)
+
+### 03_tbl.R ----
+run 01_data_prep-session3-solution.R code to create ./data/.csv, ./data/.rds, and ./data/_.xlsx
+save a table for SARS showing last ten dates of the national viral ratio with the last date being the date_reporting
+save one for Influenza
+save one for RSV
+depending on the value_pmmv, display the line in green, yellow, orange or red
+for SARS: greeen (0-1150), yellow (>1150-2390), orange (>2390-5070), red (>5070)
+for RSV: greeen (0-112), yellow (>112-253), orange (>253-507), red (>507)
+for Influenza: greeen (0-84), yellow (>84-276), orange (>276-569), red (>569)
+
+### 04_quarto.R ----
+modify scripts to display the targets in dedicated sections with graphs and tables
+
+### app_V1.R ----
+Perform the Shiny_basic instructions
+Add a dropdown menu with "SARS", "Influenza", "RSV" to displaying the graphs at the national level and at the site level
+
+### Adapt 00_main.R ----
+start doing this 45 min before the session end
+ask each team member to commit their change and push it to the online repository
+source all scripts in the 00_main.R
+commit and push the modifications

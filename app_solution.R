@@ -3,16 +3,15 @@ pkgs <- c("shiny", "plotly", "ggplot2", "dplyr")
 install.packages(setdiff(pkgs, rownames(installed.packages())))
 invisible(lapply(pkgs, FUN = library, character.only = TRUE))
 
-# load data ----
-# load nation data
-df_nation <- read.csv2("./data/Belgium_export-nation.csv", sep = ";")
+# https://rcourse.sciensano.be/shiny/deploy.html
 
-# load the data by site and select appropriate variables
-# df_site <- read.csv2("??.csv", sep = ";") %>%
-#   select(??)
+# load data ----
+df_nation <- read.csv2("./data/Belgium_export-nation.csv", sep = ";")
+df_site <- read.csv2("./data/Belgium_export-site.csv", sep = ";") %>%
+  select(measure, siteName, date, value:value_pmmv_avg14d_past)
 
 # bind nation and site data
-df <- rbind(df_nation)
+df <- rbind(df_nation, df_site)
 
 # clean data
 df$date <- as.Date(df$date)
@@ -21,7 +20,7 @@ df$value_pmmv_avg14d_past <- as.numeric(df$value_pmmv_avg14d_past)*1000
 
 # ui ----
 ui <- navbarPage(
-  title = "Wastewater surveillance",
+  title = "wastewater surveillance",
   
   tabPanel(
     "About",
@@ -35,7 +34,7 @@ ui <- navbarPage(
       color: white;
     }
     .top-bar label {
-      color: white;
+      color: grey;
       font-weight: bold;
     }
     .info-box {
@@ -56,10 +55,10 @@ ui <- navbarPage(
   
   
   tabPanel(
-    "Respi. virus",
+    "Respi. viruses",
     # Bottom acknowledgment box
     div(class = "info-box",
-        "Add a description of the surveillance..." )
+        "Wastewater surveillance in Belgium" )
     ,
     
     # Three horizontal info boxes
@@ -72,12 +71,20 @@ ui <- navbarPage(
     
     # Top bar with dropdown
     div(class = "top-bar",
+        # First dropdown: siteName
         selectInput(
           inputId = "site",
           label = "Select sampling site",
           choices = unique(df$siteName),
-          selected = "Belgium"
-        )
+          selected = unique(df$siteName)[1]
+        ),
+        # Second dropdown: measure
+        selectInput(
+          inputId = "measure_in",
+          label = "Select pathogen",
+          choices = unique(df$measure),
+          selected = unique(df$measure)[1]
+          )
     ),
     
     # Main content
@@ -86,7 +93,7 @@ ui <- navbarPage(
     
     # Bottom acknowledgment box
     div(class = "info-box",
-        "Acknowledgment: to be filled" )
+        "Acknowledgment: to all my friends" )
     
   )
   
@@ -97,7 +104,7 @@ ui <- navbarPage(
 server <- function(input, output, session) {
   
   filtered_data <- reactive({
-    df %>% filter(measure == "SARS" & siteName == input$site)
+    df %>% filter(measure == input$measure_in & siteName == input$site)
   })
   
   output$viralPlot <- renderPlotly({
@@ -106,10 +113,11 @@ server <- function(input, output, session) {
     
     p <- ggplot(data, aes(x = date)) +
       geom_point(aes(y = value_pmmv), colour = "#92D050", size = 1, na.rm = T) +
+      geom_line(aes(y = value_pmmv_avg14d_past), colour = "#BCCF00FF", linewidth = 0.5, na.rm = T) +
       scale_y_continuous(limits = c(0, NA)) +
       labs(
-        title = paste(input$site),
-        x = "", y = "(c/c)"
+        title = paste(input$measure_in, "viral ratio over time -", input$site),
+        x = "", y = "Viral ratio (c/c)"
       ) +
       theme_minimal(base_size = 14)
     

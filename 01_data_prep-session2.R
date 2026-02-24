@@ -6,13 +6,6 @@
 #| list of things to do...
 ############################################################################### #
 
-# Load packages ----
-# select packages
-pkgs <- c("dplyr", "tidyr", "zoo", "writexl", "ggplot2")
-# install packages
-install.packages(setdiff(pkgs, rownames(installed.packages())))
-invisible(lapply(pkgs, FUN = library, character.only = TRUE))
-
 # load data ----
 # Belgian data are available here https://www.geo.be/catalog/details/9eec5acf-a2df-11ed-9952-186571a04de2?l=en
 #| Metadata
@@ -28,26 +21,31 @@ invisible(lapply(pkgs, FUN = library, character.only = TRUE))
 # sars-cov-2 data
 df_sc <- read.csv("https://data.geo.be/ws/sciensano/wfs?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAMES=sciensano:wastewatertreatmentplantscovid&outputFormat=csv")
 
+# load influenza data
+df_inf <- read.csv("https://data.geo.be/ws/sciensano/wfs?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAMES=sciensano:wastewatertreatmentplantsinfluenza&outputFormat=csv")
+
+# load RSV data
+df_rsv <- read.csv("https://data.geo.be/ws/sciensano/wfs?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAMES=sciensano:wastewatertreatmentplantsrsv&outputFormat=csv")
+
 # pmmv data
 df_pmmv <- read.csv("https://data.geo.be/ws/sciensano/wfs?SERVICE=WFS&REQUEST=GetFeature&VERSION=2.0.0&TYPENAMES=sciensano:wastewatertreatmentplantspmmv&outputFormat=csv")
 
 # join both
 df <- df_sc %>%
-  rbind(df_pmmv)
+  rbind(df_inf, df_rsv, df_pmmv)
 
 # clean data
 df <- df %>%
-  select(siteName, collDTStart, labName, labProtocolID, flowRate, popServ, measure, value)
-
-# format date
-df$date <- as.Date(df$date)
+  select(siteName, collDTStart, labName, labProtocolID, flowRate, popServ, measure, value, quality) %>% 
+  rename(date = collDTStart) %>% 
+  mutate(date = as.Date(date))
 
 # set and subset dates
-date_reporting <- as.Date("2025-09-01", format = "%Y-%m-%d")
-date_graph_start <- as.Date("2024-09-01", format = "%Y-%m-%d")
-date_graph_end <- as.Date("2025-12-01", format = "%Y-%m-%d")
+# date_reporting <- 
+# date_graph_start <- 
+# date_graph_end <-
 
-# subset sars and pmmv data based on labProtocolID used betwen date_start and date_end
+# subset based on labProtocolID used betwen date_start and date_end
 # display existing labProtocolID
 # unique(df$labProtocolID)
 
@@ -61,25 +59,36 @@ date_graph_end <- as.Date("2025-12-01", format = "%Y-%m-%d")
 
 # remove outliers
 
+# normalization ----
 # compute mean of replicated analysis of each measure
 
-# compute viral ratio
-# unique(df$measure) ...
+# pivot to have SARS, Influenza, RSV and PMMV as variables
+
+# pivot again to have SARS, Influenza, RSV in the "measure" variable
+
+# compute viral load (value_load), viral ratio (value_ratio)
+
+# save
+df_site_raw <- df
+
+# smoothening ----
+# compute the linear extrapolation data
 
 # compute moving average on past 14 days
 
-# natinoal aggregation: compute weighted mean with factor being the population served by each site
+# save
+df_site <- df
 
 # export data ----
 # create folder if not existing
+dir.create("./data", showWarnings = F)
 
 # export as csv
+write.table(df_site_raw, file = "./data/Belgium_export-site_raw.csv", sep = ";", dec = ".",
+            col.names = TRUE, row.names = FALSE)
 
-# export as xls
-
-# export as rds
-
+write.table(df_site, file = "./data/Belgium_export-site.csv", sep = ";", dec = ".",
+            col.names = TRUE, row.names = FALSE)
 
 # display msg
 cat("- Success : data prep \n")
-
